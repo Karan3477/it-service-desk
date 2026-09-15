@@ -25,4 +25,36 @@ public class TicketService {
 		
 		return ticketRepository.findAll();
 	}
+	
+	public Ticket findTicketById(Long id) {
+		return ticketRepository.findById(id).orElse(null);
+	}
+	
+	public Ticket updateTicket(Long id, Ticket ticket) {
+		
+		Ticket existingTicket = ticketRepository.findById(id).orElse(null);
+		
+		if(existingTicket == null) {
+			
+			return null;
+		}
+		
+		existingTicket.setTitle(ticket.getTitle());
+		existingTicket.setDescription(ticket.getDescription());
+		existingTicket.setCategory(ticket.getCategory());
+        existingTicket.setPriority(ticket.getPriority());
+        existingTicket.setStatus(ticket.getStatus());
+        
+        return ticketRepository.save(existingTicket);
+	}
+	
+	public boolean deletedTicket(Long id) {
+		
+		if(!ticketRepository.existsById(id)) {
+			return false;
+		}
+		
+		ticketRepository.deleteById(id);
+		return true;
+	}
 }
