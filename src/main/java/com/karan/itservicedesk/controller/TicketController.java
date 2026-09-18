@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.karan.itservicedesk.model.Ticket;
 import com.karan.itservicedesk.service.TicketService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class TicketController {
 	
@@ -26,7 +28,7 @@ public class TicketController {
 	
 	
 	@PostMapping("/api/tickets")
-	public Ticket createTicket(@RequestBody Ticket ticket) {
+	public Ticket createTicket(@Valid @RequestBody Ticket ticket) {
 		
 		return ticketService.saveTicket(ticket);
 	}
@@ -50,7 +52,7 @@ public class TicketController {
 	}
 	
 	@PutMapping("api/tickets/{id}")
-	public ResponseEntity<Ticket> updateTicket(@PathVariable Long id , @RequestBody Ticket ticket) {
+	public ResponseEntity<Ticket> updateTicket(@PathVariable Long id ,@Valid @RequestBody Ticket ticket) {
 		
 		Ticket updateTicket = ticketService.updateTicket(id, ticket);
 		
@@ -63,7 +65,7 @@ public class TicketController {
 	}
 	
 	@DeleteMapping("/api/tickets/{id}")
-	public ResponseEntity<Void> deletedTicket(@PathVariable Long id) {
+	public ResponseEntity<Void> deletedTicket( @PathVariable Long id) {
 		
 		boolean deleted = ticketService.deletedTicket(id);
 		

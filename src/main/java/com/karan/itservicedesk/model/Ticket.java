@@ -1,6 +1,8 @@
 package com.karan.itservicedesk.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,10 +24,11 @@ public class Ticket {
 	@NotBlank(message = "Please enter the Category")
 	private String category;
 
-	@NotBlank(message = "Priority is required")
-	private String priority;
+	@Enumerated(EnumType.STRING)
+	private Priority priority;
 
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
 	public Long getId() {
 		return id;
@@ -59,19 +62,19 @@ public class Ticket {
 		this.category = category;
 	}
 
-	public String getPriority() {
+	public Priority getPriority() {
 		return priority;
 	}
 
-	public void setPriority(String priority) {
+	public void setPriority(Priority priority) {
 		this.priority = priority;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
