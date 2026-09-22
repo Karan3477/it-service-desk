@@ -8,6 +8,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.NotBlank;
 
@@ -33,13 +35,24 @@ public class Ticket {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
-	
 	private LocalDateTime createdAt;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 	
 	@PrePersist
 	public void prePersist() {
 		
 		createdAt = LocalDateTime.now();
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public LocalDateTime getCreatedAt() {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.karan.itservicedesk.dto.TicketResponseDTO;
 import com.karan.itservicedesk.model.Ticket;
 import com.karan.itservicedesk.repository.TicketRepository;
 
@@ -56,5 +57,25 @@ public class TicketService {
 		
 		ticketRepository.deleteById(id);
 		return true;
+	}
+	
+	public TicketResponseDTO convertToDTO(Ticket ticket) {
+	
+		TicketResponseDTO dto = new TicketResponseDTO();
+		
+		dto.setId(ticket.getId());
+		dto.setTitle(ticket.getTitle());
+		dto.setDescription(ticket.getDescription());
+		dto.setCategory(ticket.getCategory());
+		dto.setPriority(ticket.getPriority());
+		dto.setStatus(ticket.getStatus());
+		dto.setCreatedAt(ticket.getCreatedAt());
+		
+		if(ticket.getUser() != null) {
+			
+			dto.setUserId(ticket.getUser().getId());
+		}
+		
+		return dto;
 	}
 }

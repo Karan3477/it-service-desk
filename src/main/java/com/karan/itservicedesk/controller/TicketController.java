@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.karan.itservicedesk.dto.TicketResponseDTO;
 import com.karan.itservicedesk.model.Ticket;
 import com.karan.itservicedesk.service.TicketService;
 
@@ -28,19 +29,24 @@ public class TicketController {
 	
 	
 	@PostMapping("/api/tickets")
-	public Ticket createTicket(@Valid @RequestBody Ticket ticket) {
+	public TicketResponseDTO createTicket(@Valid @RequestBody Ticket ticket) {
 		
-		return ticketService.saveTicket(ticket);
+		Ticket savedTicket = ticketService.saveTicket(ticket);
+		
+		return ticketService.convertToDTO(savedTicket);
 	}
 	
 	@GetMapping("/api/tickets")
-	public List<Ticket> getAllTickets() {
+	public List<TicketResponseDTO> getAllTickets() {
 		
-		return ticketService.findAllTickets();
+		return ticketService.findAllTickets()
+				.stream()
+				.map(ticketService::convertToDTO)
+				.toList();
 	}
 	
 	@GetMapping("api/tickets/{id}")
-	public ResponseEntity<Ticket> getTicketBId(@PathVariable Long id)
+	public ResponseEntity<TicketResponseDTO> getTicketBId(@PathVariable Long id)
 	{
 		Ticket ticket = ticketService.findTicketById(id);
 		
@@ -48,11 +54,11 @@ public class TicketController {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(ticket);
+		return ResponseEntity.ok(ticketService.convertToDTO(ticket));
 	}
 	
 	@PutMapping("api/tickets/{id}")
-	public ResponseEntity<Ticket> updateTicket(@PathVariable Long id ,@Valid @RequestBody Ticket ticket) {
+	public ResponseEntity<TicketResponseDTO> updateTicket(@PathVariable Long id ,@Valid @RequestBody Ticket ticket) {
 		
 		Ticket updateTicket = ticketService.updateTicket(id, ticket);
 		
@@ -61,7 +67,8 @@ public class TicketController {
 			
 		}
 		
-		return ResponseEntity.ok(updateTicket);
+		return ResponseEntity.ok(ticketService.convertToDTO(updateTicket)
+				);
 	}
 	
 	@DeleteMapping("/api/tickets/{id}")
